@@ -1,0 +1,15 @@
+# Run via: ansible-playbook (-K) ansible/git-pull_ldcoolp.yml -i inventory -e "user=<username>"
+---
+- name: Clone or update LD-Cool-P on curation server(s)
+  hosts: patron
+  vars:
+    software: "ReQUIAM"
+  become: yes
+  become_user: "{{ user }}"
+  tasks:
+    - name: Clone or update master
+      git:
+        repo: "https://github.com/ualibraries/{{ software }}.git"
+        dest: "/home/{{ user }}/codes/{{ software }}"
+        update: yes
+        version: master
