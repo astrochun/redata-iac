@@ -1,6 +1,6 @@
-# Run via: ansible-playbook (-K) ansible/git-pull_ldcoolp.yml -i inventory -e "user=<username>"
+# Run via: ansible-playbook (-K) ansible/git-pull_requiam.yml -i inventory -e "user=<username>"
 ---
-- name: Clone or update LD-Cool-P on curation server(s)
+- name: Clone or update ReQUIAM on curation server(s)
   hosts: patron
   vars:
     software: "ReQUIAM"
