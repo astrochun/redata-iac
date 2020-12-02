@@ -1,0 +1,43 @@
+# Run via: ansible-playbook (-K) ansible/bashrc_ldcoolp_alias_setup.yml -i inventory -e "user=<username>"
+---
+- hosts: curation
+  become: yes
+  become_user: "{{ user }}"
+  tasks:
+  - name: Update .bashrc file to include LD-Cool-P set-up (aliases)
+    blockinfile:
+      path: "/home/{{ user }}/.bashrc"
+      marker: "# {mark} ANSIBLE - LD-Cool-P Software Setup"
+      block: |
+        ### This is for LD-Cool-P Software installation
+
+        ldcoolp_root='/home/curator/codes/LD_Cool_P'
+        #ldcoolp_config='$ldcoolp_root/ldcoolp/config/arizona_stage.ini'
+        ldcoolp_config='$ldcoolp_root/ldcoolp/config/arizona.ini'
+        alias get_pending="$ldcoolp_root/ldcoolp/scripts/get_curation_list --config $ldcoolp_config"
+        alias get_data="$ldcoolp_root/ldcoolp/scripts/prereq_script --config $ldcoolp_config --article_id "
+        alias get_qualtrics="$ldcoolp_root/ldcoolp/scripts/generate_qualtrics_links --config $ldcoolp_config --article_id "
+
+        alias move_next="$ldcoolp_root/ldcoolp/scripts/perform_move --config $ldcoolp_config --direction next --article_id "
+        alias move_back="$ldcoolp_root/ldcoolp/scripts/perform_move --config $ldcoolp_config --direction back --article_id "
+        alias move_publish="$ldcoolp_root/ldcoolp/scripts/perform_move --config $ldcoolp_config --direction publish --article_id "
+
+        alias update_readme="$ldcoolp_root//ldcoolp/scripts/update_readme --config $ldcoolp_config --article_id "
+
+        alias user_list="$ldcoolp_root//ldcoolp/scripts/get_user_details --config $ldcoolp_config --simple"
+
+        # For stage set-up
+        ldcoolp_config_stage='$ldcoolp_root/ldcoolp/config/arizona_stage.ini'
+        alias get_pending_stage="$ldcoolp_root/ldcoolp/scripts/get_curation_list --config $ldcoolp_config_stage"
+        alias get_data_stage="$ldcoolp_root/ldcoolp/scripts/prereq_script --config $ldcoolp_config_stage --article_id "
+        alias get_qualtrics_stage="$ldcoolp_root/ldcoolp/scripts/generate_qualtrics_links --config $ldcoolp_config_stage --article_id "
+
+        alias move_next_stage="$ldcoolp_root/ldcoolp/scripts/perform_move --config $ldcoolp_config_stage --direction next --article_id "
+        alias move_back_stage="$ldcoolp_root/ldcoolp/scripts/perform_move --config $ldcoolp_config_stage --direction back --article_id "
+        alias move_publish_stage="$ldcoolp_root/ldcoolp/scripts/perform_move --config $ldcoolp_config_stage --direction publish --article_id "
+
+        alias update_readme_stage="$ldcoolp_root/ldcoolp/scripts/update_readme --config $ldcoolp_config_stage --article_id "
+
+        conda activate curation
+        cd ~/codes/LD_Cool_P
+      backup: yes
