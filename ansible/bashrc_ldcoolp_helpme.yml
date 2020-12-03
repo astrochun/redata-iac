@@ -1,0 +1,62 @@
+# Run via: ansible-playbook (-K) ansible/bashrc_ldcoolp_helpme.yml -i inventory -e "user=<username>"
+---
+- hosts: curation
+  become: yes
+  become_user: "{{ user }}"
+  tasks:
+  - name: Update .bashrc file to include LD-Cool-P helpme banner
+    blockinfile:
+      path: "/home/{{ user }}/.bashrc"
+      marker: "# {mark} ANSIBLE - LD-Cool-P HelpMe"
+      block: |
+        read -r -d '' banner_message << EOM
+        ************************************************************************
+        Welcome ReDATA curator!!!
+
+        You are in the curation conda environment, and
+        You are in the right path to execute all command-line LD-Cool-P scripts.
+
+        [1] Retrieve a list of article_id for pending curation deposits:
+            It will give your the article_id for a list of pending curation:
+               get_pending
+
+        # python ldcoolp/scripts/get_curation_list --config ldcoolp/config/arizona.ini
+
+        [2] To get the custom Qualtrics URL, type:
+               get_qualtrics XXXXXXXX
+
+        # python ldcoolp/scripts/generate_qualtrics_link --config ldcoolp/config/arizona.ini --article_id XXXXXXXX
+
+
+        [3] To run the LD-Cool-P retrieval script, type:
+               get_data XXXXXXXX
+
+        # python ldcoolp/scripts/prereq_script --article_id XXXXXXXX
+        # where XXXXXXXX is the figshare article ID and also the DOI number
+
+        [4] *NEW* To move dataset from curation, type: *NEW*
+               move_next XXXXXXXX
+               move_back XXXXXXXX
+               move_publish XXXXXXXX
+
+        # ./ldcoolp/scripts/perform_move --config ldcoolp/config/arizona.ini
+        #   --direction [next/back/publish] --article_id XXXXXXXX
+
+
+        [5] *NEW* To update the README.txt file, type: *NEW*
+               update_readme XXXXXXXX
+
+        # ./ldcoolp/scripts/readme_update --config $ldcoolp_config
+        #   --article_id XXXXXXXX
+
+
+        See https://github.com/ualibraries/LD_Cool_P for the full documentation
+
+        To see this message again, type "helpme"
+        ************************************************************************
+        EOM
+
+        alias helpme='echo "$banner_message"'
+
+        helpme
+      backup: yes
