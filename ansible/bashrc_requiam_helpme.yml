@@ -1,0 +1,70 @@
+# Run via: ansible-playbook (-K) ansible/bashrc_requiam_helpme.yml -i inventory -e "user=<username>"
+---
+- hosts: patron
+  become: yes
+  become_user: "{{ user }}"
+  tasks:
+  - name: Update .bashrc file to include ReQUIAM helpme banner
+    blockinfile:
+      path: "/home/{{ user }}/.bashrc"
+      marker: "# {mark} ANSIBLE - ReQUIAM HelpMe"
+      block: |
+        read -r -d '' banner_message << EOM
+        ************************************************************************
+        Welcome ReDATA Patroner!!!
+
+        You are in the figshare_patron conda environment, and
+        You are in the right path to execute all command-line ReQUIAM scripts.
+
+        To run the ReQUIAM manual user update script, type:
+        manual_update --netid <netid1>,<netid2> --portal <new_portal> --quota <new_quota> --sync
+          (Without the sync flag, it will be a dry run)
+
+        # Default settings:
+        # ./scripts/user_update --config config/figshare.ini --persistent_path $persist_path \\
+        #  --portal_file config/portal_manual.csv --quota_file config/quota_manual.csv \\
+        #  --ldap_password \$eds_pass --grouper_password \$eds_pass
+
+        For undergrads that need to be added to the 100MB, type: *NEW*
+        add_ugrad --netid <netid1>,<netid2> --portal <new_portal> --sync
+          (Without the sync flag, it will be a dry run)
+
+        # Default settings:
+        # ./scripts/user_update --config config/figshare.ini --persistent_path $persist_path \\
+        #  --portal_file config/portal_manual.csv --quota_file config/quota_manual.csv \\
+        #  --ldap_password \$eds_pass --grouper_password \$eds_pass --quota 104857600
+
+
+        -----
+
+        To run the main script, type: *NEW*
+        run_main_script --portal --quota (This will be a dry run)
+
+        # Default settings:
+        # ./scripts/script_run --config config/figshare.ini --persistent_path \$persist_path \\
+        #  --ldap_password \$eds_pass --grouper_password \$eds_pass
+
+
+        -----
+
+        To run the Grouper group add script, type: *NEW*
+        With stage/testing stem, figtest:
+          add_groups --main_themes --sub_portals --quotas (--add is needed, otherwise dry run)
+
+        With production stem, figshare:
+          add_groups --main_themes --sub_portals --quotas --production (--add is needed, otherwise dry run)
+
+        # Default settings:
+        # ./scripts/add_grouper_groups --config config/figshare.ini --persistent_path \$persist_path \\
+        #  --grouper_password=\$eds_pass
+
+        See https://github.com/ualibraries/ReQUIAM for the full documentation
+
+        To see this message again, type "helpme"
+        ************************************************************************
+        EOM
+
+        alias helpme='echo "$banner_message"'
+
+        helpme
+      backup: yes
