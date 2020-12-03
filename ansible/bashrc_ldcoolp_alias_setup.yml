@@ -11,7 +11,7 @@
       block: |
         ### This is for LD-Cool-P Software installation
 
-        ldcoolp_root='/home/curator/codes/LD_Cool_P'
+        ldcoolp_root='/home/{{ user }}/codes/LD_Cool_P'
         #ldcoolp_config='$ldcoolp_root/ldcoolp/config/arizona_stage.ini'
         ldcoolp_config='$ldcoolp_root/ldcoolp/config/arizona.ini'
         alias get_pending="$ldcoolp_root/ldcoolp/scripts/get_curation_list --config $ldcoolp_config"
