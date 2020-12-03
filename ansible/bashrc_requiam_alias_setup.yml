@@ -1,0 +1,27 @@
+# Run via: ansible-playbook (-K) ansible/bashrc_requiam_alias_setup.yml -i inventory -e "user=<username> eds_pass=<password>"
+---
+- hosts: patron
+  vars:
+    persist_path: /mnt/block3_sfo2/
+  become: yes
+  become_user: "{{ user }}"
+  tasks:
+  - name: Update .bashrc file to include ReQUIAM set-up (aliases)
+    blockinfile:
+      path: "/home/{{ user }}/.bashrc"
+      marker: "# {mark} ANSIBLE - ReQUIAM Software Setup"
+      block: |
+        ### This is for ReQUIAM Software
+
+        eds_pass='{{ eds_pass }}'
+        persist_path="{{ persist_path }}"
+
+        alias manual_update="./scripts/user_update --config config/figshare.ini --persistent_path $persist_path --portal_file config/portal_manual.csv --quota_file config/quota_manual.csv --ldap_password $eds_pass --grouper_password $eds_pass"
+        alias run_main_script="./scripts/script_run --config config/figshare.ini --persistent_path $persist_path --ldap_password $eds_pass --grouper_password $eds_pass"
+        alias add_groups="./scripts/add_grouper_groups --config config/figshare.ini --persistent_path $persist_path --grouper_password=$eds_pass"
+
+        alias add_ugrad="./scripts/user_update --config config/figshare.ini --persistent_path $persist_path --portal_file config/portal_manual.csv --quota_file config/quota_manual.csv --ldap_password $eds_pass --grouper_password $eds_pass --quota 104857600"
+
+        conda activate figshare_patrons
+        cd ~/codes/ReQUIAM
+      backup: yes
