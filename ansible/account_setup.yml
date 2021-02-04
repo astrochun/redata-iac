@@ -1,0 +1,15 @@
+# This script creates a user on hostname and pass in ssh keys
+# Run via: ansible-playbook (-K) ansible/account_setup.yml -i inventory \
+#          -e "hostname=<hostname> user=<user> pass=<password> gh_user=<gh_user>"
+- name: "Create {{ user }} account"
+  import_playbook: ansible/account_create.yml
+  vars:
+    user: {{ user }}
+    hostname: {{ hostname }}
+    pass: {{ pass }}
+- name: Add SSH keys to {{ hostname }} via GitHub
+  import_playbook: ansible/add_ssh_key_github.yml
+  vars:
+    user: {{ user }}
+    hostname: {{ hostname }}
+    gh_user: {{ gh_user }}
