@@ -1,5 +1,5 @@
 # Run via: ansible-playbook (-K) ansible/account_create.yml -i inventory \
-#            -e "hostname=<hostname> user=<username> pass=<password>"
+#            -e "hostname=<hostname> user=<username> password=<password>"
 # Password must be hashed:
 # python -c "from passlib.hash import sha512_crypt; import getpass; print(sha512_crypt.using(rounds=5000).hash(getpass.getpass()))"
 ---
@@ -9,7 +9,7 @@
     - name: Create a login for {{ user }}
       user:
         name: "{{ user }}"
-        password: "{{ pass }}"
+        password: "{{ password }}"
         update_password: always
         state: present
         shell: /bin/bash          # Defaults to /bin/bash
