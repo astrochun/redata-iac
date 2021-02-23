@@ -1,8 +1,7 @@
 # This script creates a user on hostname and pass in ssh keys
 # Run via: ansible-playbook (-K) ansible/account_setup.yml -i inventory \
 #          -e "hostname=<hostname> user=<user> password=<password> gh_user=<gh_user>"
-# Password must be hashed:
-# python -c "from passlib.hash import sha512_crypt; import getpass; print(sha512_crypt.using(rounds=5000).hash(getpass.getpass()))"
+# Password will be hashed in parsing
 - name: "Create {{ user }} account"
   import_playbook: account_create.yml user='{{ user }}' password='{{ password }}' hostname='{{ hostname }}'
 - name: Add SSH keys to {{ hostname }} via GitHub
