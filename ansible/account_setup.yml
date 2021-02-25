@@ -9,4 +9,4 @@
 #- name: "Add SSH keys to {{ hostname }} via GitHub"
 #  import_playbook: add_ssh_key_github.yml user='{{ user }}' hostname='{{ hostname }}' gh_user='{{ gh_user }}'
 - name: "Add to groups: {{ groups_list }}"
-  import_playbook: account_group_mgmt.yml user='{{ user }}' hostname='{{ hostname }}' groups_list='{{ groups_list }}' append=yes'
+  import_playbook: account_group_mgmt.yml user='{{ user }}' hostname='{{ hostname }}' groups_list='{{ groups_list }}' append=yes
