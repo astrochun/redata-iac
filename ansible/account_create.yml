@@ -1,0 +1,18 @@
+# Run via: ansible-playbook (-K) ansible/account_create.yml -i inventory \
+#            -e "hostname=<hostname> user=<username> password=<password>"
+# Password will be hashed in parsing
+---
+- name: Create a linux account
+  hosts: "{{ hostname }}"
+  tasks:
+    - name: Create a login for {{ user }}
+      user:
+        name: "{{ user }}"
+        password: "{{ password | password_hash('sha512')}}"
+        update_password: always
+        state: present
+        shell: /bin/bash          # Defaults to /bin/bash
+        system: no                # Defaults to no
+        create_home: yes          # Defaults to yes
+        home: "/home/{{ user }}"  # Defaults to /home/<username>
+        generate_ssh_key: yes

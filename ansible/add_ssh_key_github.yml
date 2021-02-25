@@ -1,0 +1,11 @@
+# Run via: ansible-playbook (-K) ansible/add_ssh_key.yml -i inventory \
+#            -e "hostname=<hostname> user=<username> gh_user=gh_user"
+
+---
+- name: Add SSH keys to {{ hostname }} via GitHub
+  hosts: "{{ hostname }}"
+  tasks:
+    - name: Add for {{ user }}
+      authorized_key:
+        user: "{{ user }}"
+        key: "https://github.com/{{ gh_user }}.keys"

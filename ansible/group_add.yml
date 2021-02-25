@@ -1,0 +1,12 @@
+# Run via: ansible-playbook (-K) ansible/group_add.yml -i inventory \
+#            -e "hostname=<hostname> group_name=<group_name> gid=<gid>"
+---
+- name: Create a system group
+  hosts: "{{ hostname }}"
+  tasks:
+    - name: Create a system group
+      group:
+        name: "{{ group_name }}"
+        gid: "{{ gid }}"
+        state: present
+        system: yes

@@ -1,0 +1,12 @@
+# Run via: ansible-playbook (-K) ansible/account_group_mgmt.yml -i inventory \
+#            -e "hostname=<hostname> user=<username> groups_list=<groups_list> append=<yes|no>"
+---
+- name: Add groups
+  hosts: "{{ hostname }}"
+  tasks:
+    - name: Add groups for {{ user }}
+      user:
+        name: "{{ user }}"
+        state: present
+        groups: "{{ groups_list }}"
+        append: "{{ append }}"
