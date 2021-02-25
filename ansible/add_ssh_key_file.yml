@@ -1,0 +1,11 @@
+# Run via: ansible-playbook (-K) ansible/add_ssh_key_file.yml -i inventory \
+#            -e "hostname=<hostname> user=<username> key_file=<key_file>"
+
+---
+- name: Add SSH keys to {{ hostname }} via SSH file
+  hosts: "{{ hostname }}"
+  tasks:
+    - name: Add for {{ user }}
+      authorized_key:
+        user: "{{ user }}"
+        key: "{{ lookup('file', '{{ key_file }}') }}"
