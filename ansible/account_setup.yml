@@ -1,10 +1,12 @@
 # This script creates a user on hostname and pass in ssh keys
 # Run via: ansible-playbook (-K) ansible/account_setup.yml -i inventory \
-#          -e "hostname=<hostname> user=<user> password=<password> groups_list=<groups_list> gh_user=<gh_user>"
+#          -e "hostname=<hostname> user=<user> password=<password> groups_list=<groups_list> key_file=<key_file>"
 # Password will be hashed in parsing
 - name: "Create {{ user }} account"
   import_playbook: account_create.yml user='{{ user }}' password='{{ password }}' hostname='{{ hostname }}'
-- name: "Add SSH keys to {{ hostname }} via GitHub"
-  import_playbook: add_ssh_key_github.yml user='{{ user }}' hostname='{{ hostname }}' gh_user='{{ gh_user }}'
+- name: "Add SSH keys to {{ hostname }}"
+  import_playbook: add_ssh_key_file.yml user='{{ user }}' hostname='{{ hostname }}' key_file='{{ key_file }}'
+#- name: "Add SSH keys to {{ hostname }} via GitHub"
+#  import_playbook: add_ssh_key_github.yml user='{{ user }}' hostname='{{ hostname }}' gh_user='{{ gh_user }}'
 - name: "Add to groups: {{ groups_list }}"
   import_playbook: account_group_mgmt.yml user='{{ user }}' hostname='{{ hostname }}' groups_list='{{ groups_list }} append=yes'
