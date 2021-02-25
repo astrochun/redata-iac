@@ -4,7 +4,7 @@
 - name: Add groups
   hosts: "{{ hostname }}"
   tasks:
-    - name: Add groups for {{ user }}
+    - name: "Add groups for {{ user }}"
       user:
         name: "{{ user }}"
         state: present
