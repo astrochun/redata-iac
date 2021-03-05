@@ -12,7 +12,16 @@ log_file=doctl_snapshot_list.log
 yyyymmdd_date=$(date +%Y%m%d)
 dash_date=$(date +%Y-%m-%d)
 
-volume_name=$1
+function usage() {
+  echo "Usage:
+  To execute and take snapshot:
+    ./doctl_backup.sh -t -v <volume_name> (uses doctl auth stored)
+    ./doctl_backup.sh -t -v <volume_name> -t <token> (uses specified token)
+
+  To delete:
+    ./doctl_backup.sh -d -v <volume_name> (uses doctl auth stored)
+    ./doctl_backup.sh -d -v <volume_name> -t <token> (uses specified token)\n"
+}
 
 if [ "$#" == 2 ]
 then
