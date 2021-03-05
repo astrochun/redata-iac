@@ -9,8 +9,8 @@
 log_file=doctl_snapshot_list.log
 
 # A invalid format error occurs with bash v5.0, but not v4.4
-printf -v yyyymmdd_date '%(%Y%m%d)T' -1
-printf -v dash_date '%(%Y-%m-%d)T' -1
+yyyymmdd_date=$(date +%Y%m%d)
+dash_date=$(date +%Y-%m-%d)
 
 volume_name=$1
 
