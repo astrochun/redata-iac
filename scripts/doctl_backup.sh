@@ -28,7 +28,7 @@ function logging() {
   printf "$1\n" >> "$log_file"
 }
 
-if [ -e $1]
+if [ -e $1 ]
 then
   usage
   exit 1
@@ -51,7 +51,7 @@ while getopts "hm:v:t:" opt; do
     t)
       logging "TOKEN PROVIDED"
       doctl_token="$OPTARG"
-      t_str="-t $doctl_token"
+      t_str="-t ${doctl_token}"
       ;;
   esac
 done
@@ -62,8 +62,8 @@ volume_id=$(doctl compute volume list $t_str | \
 logging "VOLUME ID : $volume_id"
 
 # Retrieve list
-r_cmd='doctl compute snapshot list --resource volume $t_str >> ${log_file}'
-logging "$r_cmd"
+r_cmd="doctl compute snapshot list --resource volume ${t_str} >> ${log_file}"
+logging "${r_cmd}"
 eval "$r_cmd"
 
 # Take snapshot
@@ -73,8 +73,8 @@ function TakeSnapshot {
   logging "SAVING SNAPSHOT AS : $snapshot_name"
   logging "Taking snapshot of $volume_id called $snapshot_name"
 
-  s_cmd='doctl compute volume snapshot $volume_id --snapshot-name $snapshot_name \
-    --snapshot-desc doctl $dash_date -tag backup $t_str'
+  s_cmd="doctl compute volume snapshot $volume_id --snapshot-name $snapshot_name \
+    --snapshot-desc doctl $dash_date -tag backup ${t_str}"
   logging "$s_cmd"
   # eval "$s_cmd"
 }
@@ -86,9 +86,9 @@ function DeleteSnapshot {
   snapshot_id=$(doctl compute snapshot list --resource volume "$t_str" | grep $volume_name | tail -1 | awk '{print $1}')
   snapshot_date=$(doctl compute snapshot list --resource volume "$t_str" | \
                grep "$volume_name" | tail -1 | awk '{print $3}')
-  logging "Deleting last one: $snapshot_id"
+  logging "Deleting last one: ${snapshot_id}"
   logging "Date of: $snapshot_date"
-  d_cmd='doctl compute snapshot delete $snapshot_id $t_str'
+  d_cmd="doctl compute snapshot delete $snapshot_id ${t_str}"
   logging "$d_cmd"
   # eval "$d_cmd"
 }
