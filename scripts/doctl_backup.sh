@@ -15,26 +15,23 @@ dash_date=$(date +%Y-%m-%d)
 function usage() {
   echo "Usage:
   To execute and take snapshot:
-    ./doctl_backup.sh -t -v <volume_name> (uses doctl auth stored)
-    ./doctl_backup.sh -t -v <volume_name> -t <token> (uses specified token)
+    ./doctl_backup.sh -v <volume_name> -m take -v (uses doctl auth stored)
+    ./doctl_backup.sh -v <volume_name> -m take -t <token> (uses specified token)
 
   To delete:
-    ./doctl_backup.sh -d -v <volume_name> (uses doctl auth stored)
-    ./doctl_backup.sh -d -v <volume_name> -t <token> (uses specified token)\n"
+    ./doctl_backup.sh -v <volume_name> -m delete (uses doctl auth stored)
+    ./doctl_backup.sh -v <volume_name> -m delete -t <token> (uses specified token)\n"
 }
 
 t_str=""
-while getopts ":hsd:v:t:" opt; do
+while getopts "hm:v:t:" opt; do
   case "${opt}" in
     h)
       usage
       exit 0
       ;;
-    s)
-      snapshot="true"
-      ;;
-    d)
-      delete="true"
+    m)
+      method="$OPTARG"
       ;;
     v)
       volume_name="$OPTARG"
@@ -50,7 +47,6 @@ while getopts ":hsd:v:t:" opt; do
       ;;
   esac
 done
-
 
 # Retrieve volume_id
 volume_id=$(doctl compute volume list "$t_str" | \
@@ -87,10 +83,10 @@ function DeleteSnapshot {
 
 ###
 
-if [[ "$snapshot" = "true" ]]; then
+if [[ "$method" = "take" ]]; then
   TakeSnapshot
 fi
 
-if [[ "$delete" = "true" ]]; then
+if [[ "$method" = "delete" ]]; then
   DeleteSnapshot
 fi
