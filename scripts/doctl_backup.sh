@@ -20,13 +20,19 @@ function usage() {
 
   To delete:
     ./doctl_backup.sh -v <volume_name> -m delete (uses doctl auth stored)
-    ./doctl_backup.sh -v <volume_name> -m delete -t <token> (uses specified token)\n"
+    ./doctl_backup.sh -v <volume_name> -m delete -t <token> (uses specified token)"
 }
 
 function logging() {
   echo $1
   printf "$1\n" >> "$log_file"
 }
+
+if [ -e $1]
+then
+  usage
+  exit 1
+fi
 
 t_str=""
 while getopts "hm:v:t:" opt; do
