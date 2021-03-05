@@ -23,15 +23,33 @@ function usage() {
     ./doctl_backup.sh -d -v <volume_name> -t <token> (uses specified token)\n"
 }
 
-if [ "$#" == 2 ]
-then
-  doctl_token=$2
-  t_str="-t $doctl_token"
-  printf "TOKEN PROVIDED\n"
-  printf "TOKEN PROVIDED\n" >> "$log_file"
-else
-  t_str=""
-fi
+t_str=""
+while getopts ":hsd:v:t:" opt; do
+  case "${opt}" in
+    h)
+      usage
+      exit 0
+      ;;
+    s)
+      snapshot="true"
+      ;;
+    d)
+      delete="true"
+      ;;
+    v)
+      volume_name="$OPTARG"
+      msg="VOLUME PROVIDED : $volume_name"
+      echo $msg
+      printf "$msg\n" >> $log_file
+      ;;
+    t)
+      msg="TOKEN PROVIDED"
+      printf "$msg\n" >> $log_file
+      doctl_token="$OPTARG"
+      t_str="-t $doctl_token"
+      ;;
+  esac
+done
 
 
 # Retrieve volume_id
