@@ -87,10 +87,10 @@ function DeleteSnapshot {
 
 ###
 
-if [[ "$ARG_TAKE" = true ]]; then
+if [[ "$snapshot" = "true" ]]; then
   TakeSnapshot
 fi
 
-if [[ "$ARG_DELETE" = true ]]; then
+if [[ "$delete" = "true" ]]; then
   DeleteSnapshot
 fi
