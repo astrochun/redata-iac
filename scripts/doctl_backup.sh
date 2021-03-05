@@ -23,6 +23,11 @@ function usage() {
     ./doctl_backup.sh -v <volume_name> -m delete -t <token> (uses specified token)\n"
 }
 
+function logging() {
+  echo $1
+  printf "$1\n" >> "$log_file"
+}
+
 t_str=""
 while getopts "hm:v:t:" opt; do
   case "${opt}" in
@@ -35,13 +40,10 @@ while getopts "hm:v:t:" opt; do
       ;;
     v)
       volume_name="$OPTARG"
-      msg="VOLUME PROVIDED : $volume_name"
-      echo $msg
-      printf "$msg\n" >> $log_file
+      logging "VOLUME PROVIDED : $volume_name"
       ;;
     t)
-      msg="TOKEN PROVIDED"
-      printf "$msg\n" >> $log_file
+      logging "TOKEN PROVIDED"
       doctl_token="$OPTARG"
       t_str="-t $doctl_token"
       ;;
@@ -49,36 +51,40 @@ while getopts "hm:v:t:" opt; do
 done
 
 # Retrieve volume_id
-volume_id=$(doctl compute volume list "$t_str" | \
-           grep "$volume_name" | awk '{print $1}')
-echo $volume_id
+volume_id=$(doctl compute volume list $t_str | \
+           grep $volume_name | awk '{print $1}')
+logging "VOLUME ID : $volume_id"
 
 # Retrieve list
-r_cmd='doctl compute snapshot list --resource volume $t_str >> $log_file'
-printf $r_cmd + '\n'
+r_cmd='doctl compute snapshot list --resource volume $t_str >> ${log_file}'
+logging "$r_cmd"
 eval "$r_cmd"
-
-snapshot_name="$volume_name"_"$yyyymmdd_date"
 
 # Take snapshot
 function TakeSnapshot {
-  printf "Taking snapshot of %s called %s" "$volume_id" "$snapshot_name" >> "$log_file"
-  t_cmd='doctl compute volume snapshot $volume_id --snapshot-name $snapshot_name \
-         --snapshot-desc doctl $dash_date -tag backup $t_str'
-  eval "$t_cmd"
+  snapshot_name="${volume_name}_${yyyymmdd_date}"
+
+  logging "SAVING SNAPSHOT AS : $snapshot_name"
+  logging "Taking snapshot of $volume_id called $snapshot_name"
+
+  s_cmd='doctl compute volume snapshot $volume_id --snapshot-name $snapshot_name \
+    --snapshot-desc doctl $dash_date -tag backup $t_str'
+  logging "$s_cmd"
+  # eval "$s_cmd"
 }
 
 # Delete snapshot
 function DeleteSnapshot {
   # Need to retrieve oldest snapshot_id
-  printf "Retrieving list of previous snapshots for %s" "$volume_name" >> "$log_file"
-  snapshot_id=$(doctl compute snapshot list --resource volume "$t_str" | \
-               grep "$volume_name" | tail -1 | awk '{print $1}')
+  logging "Retrieving list of previous snapshots for $volume_name"
+  snapshot_id=$(doctl compute snapshot list --resource volume "$t_str" | grep $volume_name | tail -1 | awk '{print $1}')
   snapshot_date=$(doctl compute snapshot list --resource volume "$t_str" | \
                grep "$volume_name" | tail -1 | awk '{print $3}')
-  printf "Deleting last one: %s" "$snapshot_id" >> "$log_file"
-  printf "Date of: %s" "$snapshot_date" >> "$log_file"
-  echo doctl compute snapshot delete "$snapshot_id" "$t_str"
+  logging "Deleting last one: $snapshot_id"
+  logging "Date of: $snapshot_date"
+  d_cmd='doctl compute snapshot delete $snapshot_id $t_str'
+  logging "$d_cmd"
+  # eval "$d_cmd"
 }
 
 ###
