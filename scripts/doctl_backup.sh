@@ -35,16 +35,17 @@ function logging() {
   printf "$1\n" >> "$log_file"
 }
 
-logging "############################"
-logging "Starting doctl_backup script"
-logging "Version: $script_version"
-logging "$(date)"
-logging "Executed command: $0 $*"
 if [ -e $1 ]
 then
   usage
   exit 1
 fi
+
+logging "############################"
+logging "Starting doctl_backup script"
+logging "Version: $script_version"
+logging "$(date)"
+logging "Executed command: $0 $*"
 
 t_str=""
 while getopts "hm:v:t:" opt; do
