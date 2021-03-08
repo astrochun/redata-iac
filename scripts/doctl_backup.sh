@@ -1,10 +1,15 @@
 #!/bin/bash
+# For help information:
+#   ./scripts/doctl_backup.sh -h
+#
 # To execute and take snapshot:
-#   ./doctl_backup.sh -v <volume_name> -m take (uses doctl auth stored)
-#   ./doctl_backup.sh -v <volume_name> -t <token> -m take(uses specified token)
+#   ./scripts/doctl_backup.sh -v <volume_name> -m take (uses doctl auth stored)
+#   ./scripts/doctl_backup.sh -v <volume_name> -t <token> -m take(uses specified token)
+#
 # To delete:
-#   ./doctl_backup.sh -v <volume_name> -m delete (uses doctl auth stored)
-#   ./doctl_backup.sh -v <volume_name> -t <token> -m delete (uses specified token)
+#   ./scripts/doctl_backup.sh -v <volume_name> -m delete (uses doctl auth stored)
+#   ./scripts/doctl_backup.sh -v <volume_name> -t <token> -m delete (uses specified token)
+
 
 script_version="1.0.0"
 
@@ -17,12 +22,12 @@ dash_date=$(date +%Y-%m-%d)
 function usage() {
   echo "Usage:
   To execute and take snapshot:
-    ./doctl_backup.sh -v <volume_name> -m take -v (uses doctl auth stored)
-    ./doctl_backup.sh -v <volume_name> -m take -t <token> (uses specified token)
+    ./scripts/doctl_backup.sh -v <volume_name> -m take -v (uses doctl auth stored)
+    ./scripts/doctl_backup.sh -v <volume_name> -m take -t <token> (uses specified token)
 
-  To delete:
-    ./doctl_backup.sh -v <volume_name> -m delete (uses doctl auth stored)
-    ./doctl_backup.sh -v <volume_name> -m delete -t <token> (uses specified token)"
+  To execute and delete snapshot:
+    ./scripts/doctl_backup.sh -v <volume_name> -m delete (uses doctl auth stored)
+    ./scripts/doctl_backup.sh -v <volume_name> -m delete -t <token> (uses specified token)"
 }
 
 function logging() {
