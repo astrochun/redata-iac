@@ -6,9 +6,11 @@
 #   ./doctl_backup.sh -v <volume_name> -m delete (uses doctl auth stored)
 #   ./doctl_backup.sh -v <volume_name> -t <token> -m delete (uses specified token)
 
+script_version="1.0.0"
+
 log_file=doctl_snapshot_list.log
 
-# A invalid format error occurs with bash v5.0, but not v4.4
+# Invalid format error occurs with bash v5.0, but not v4.4. Simplified solution below
 yyyymmdd_date=$(date +%Y%m%d)
 dash_date=$(date +%Y-%m-%d)
 
@@ -28,6 +30,11 @@ function logging() {
   printf "$1\n" >> "$log_file"
 }
 
+logging "############################"
+logging "Starting doctl_backup script"
+logging "Version: $script_version"
+logging "$(date)"
+logging "Executed command: $0 $*"
 if [ -e $1 ]
 then
   usage
@@ -102,3 +109,7 @@ fi
 if [[ "$method" = "delete" ]]; then
   DeleteSnapshot
 fi
+
+logging "$(date)"
+logging "Completed!"
+logging "############################"
