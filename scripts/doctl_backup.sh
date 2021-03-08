@@ -1,10 +1,10 @@
 #!/bin/bash
 # To execute and take snapshot:
-#   ./doctl_backup.sh -t -v <volume_name> (uses doctl auth stored)
-#   ./doctl_backup.sh -t -v <volume_name> -t <token> (uses specified token)
+#   ./doctl_backup.sh -v <volume_name> -m take (uses doctl auth stored)
+#   ./doctl_backup.sh -v <volume_name> -t <token> -m take(uses specified token)
 # To delete:
-#   ./doctl_backup.sh -d -v <volume_name> (uses doctl auth stored)
-#   ./doctl_backup.sh -d -v <volume_name> -t <token> (uses specified token)
+#   ./doctl_backup.sh -v <volume_name> -m delete (uses doctl auth stored)
+#   ./doctl_backup.sh -v <volume_name> -t <token> -m delete (uses specified token)
 
 log_file=doctl_snapshot_list.log
 
