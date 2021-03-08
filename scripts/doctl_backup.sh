@@ -74,7 +74,7 @@ function TakeSnapshot {
   logging "Taking snapshot of $volume_id called $snapshot_name"
 
   s_cmd="doctl compute volume snapshot $volume_id --snapshot-name $snapshot_name \
-    --snapshot-desc doctl $dash_date -tag backup ${t_str}"
+    --snapshot-desc 'doctl $dash_date' -tag backup ${t_str}"
   logging "$s_cmd"
   # eval "$s_cmd"
 }
