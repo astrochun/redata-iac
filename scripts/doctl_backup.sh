@@ -23,7 +23,7 @@
 #   ./scripts/doctl_backup.sh -v <volume_name> -t <token> -m delete (uses specified token)
 
 
-script_version="1.0.1"
+script_version="1.0.2"
 
 log_file=doctl_snapshot_list.log
 
