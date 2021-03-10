@@ -26,7 +26,7 @@
 
 script_version="1.0.2"
 
-log_file=doctl_snapshot_list.log
+log_file=doctl_backup.log
 
 # Invalid format error occurs with bash v5.0, but not v4.4. Simplified solution below
 yyyymmdd_date=$(date +%Y%m%d)
