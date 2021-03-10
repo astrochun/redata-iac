@@ -1,33 +1,60 @@
 #!/bin/bash
+# DOCTL Backup script
+#   Version: 1.0.2
+#   Creator: Chun Ly
+#   Language: bash
+#
+# Options:
+#  -h Help information
+#  -v Volume name
+#  -m Method ("take"/"delete")
+#  -t Digital Ocean token
+#
+# Usage:
+#
 # For help information:
 #   ./scripts/doctl_backup.sh -h
 #
-# To execute and take snapshot:
+# To take a new snapshot:
 #   ./scripts/doctl_backup.sh -v <volume_name> -m take (uses doctl auth stored)
 #   ./scripts/doctl_backup.sh -v <volume_name> -t <token> -m take(uses specified token)
 #
-# To delete:
+# To delete last snapshot:
 #   ./scripts/doctl_backup.sh -v <volume_name> -m delete (uses doctl auth stored)
 #   ./scripts/doctl_backup.sh -v <volume_name> -t <token> -m delete (uses specified token)
 
 
-script_version="1.0.1"
+script_version="1.0.2"
 
-log_file=doctl_snapshot_list.log
+log_file=doctl_backup.log
 
 # Invalid format error occurs with bash v5.0, but not v4.4. Simplified solution below
 yyyymmdd_date=$(date +%Y%m%d)
 dash_date=$(date +%Y-%m-%d)
 
 function usage() {
-  echo "Usage:
-  To execute and take snapshot:
+  echo "  DOCTL Backup script
+    Version: ${script_version}
+    Creator: Chun Ly
+    Language: bash
+
+  Options:
+   -h Help information
+   -v Volume name
+   -m Method ("take"/"delete")
+   -t Digital Ocean token
+
+  Usage:
+  To take a new snapshot:
     ./scripts/doctl_backup.sh -v <volume_name> -m take -v (uses doctl auth stored)
     ./scripts/doctl_backup.sh -v <volume_name> -m take -t <token> (uses specified token)
 
-  To execute and delete snapshot:
+  To delete the last snapshot:
     ./scripts/doctl_backup.sh -v <volume_name> -m delete (uses doctl auth stored)
     ./scripts/doctl_backup.sh -v <volume_name> -m delete -t <token> (uses specified token)"
+  logging "$(date)"
+  logging "Completed!"
+  logging "############################"
 }
 
 function logging() {
@@ -48,11 +75,17 @@ logging "$(date)"
 logging "Executed command: $0 $*"
 
 t_str=""
-while getopts "hm:v:t:" opt; do
+force="False"
+f_str=""
+while getopts "hfm:v:t:" opt; do
   case "${opt}" in
     h)
       usage
       exit 0
+      ;;
+    f):
+      force="True"
+      f_str="-f"
       ;;
     m)
       method="$OPTARG"
@@ -89,7 +122,15 @@ function TakeSnapshot {
   s_cmd="doctl compute volume snapshot $volume_id --snapshot-name $snapshot_name \
     --snapshot-desc 'doctl $dash_date' -tag backup ${t_str}"
   logging "$s_cmd"
-  eval "$s_cmd"
+  if [[ $force = "False" ]]; then
+    read -p "Do you wish to take snapshot? Yes/No : ${response}"
+    logging "Do you wish to take snapshot? ${response}"
+    if [[ $response = "Yes" ]]; then
+      eval "$s_cmd"
+    fi
+  else
+    eval test2 "$s_cmd"
+  fi
 }
 
 # Delete snapshot
@@ -101,7 +142,7 @@ function DeleteSnapshot {
                grep "$volume_name" | tail -1 | awk '{print $3}')
   logging "Deleting last one: $snapshot_id"
   logging "Date of: $snapshot_date"
-  d_cmd="doctl compute snapshot delete $snapshot_id ${t_str}"
+  d_cmd="doctl compute snapshot delete $snapshot_id ${t_str} ${f_str}"
   logging "$d_cmd"
   eval "$d_cmd"
 }
