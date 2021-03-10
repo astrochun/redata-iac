@@ -48,11 +48,17 @@ logging "$(date)"
 logging "Executed command: $0 $*"
 
 t_str=""
-while getopts "hm:v:t:" opt; do
+force="False"
+f_str=""
+while getopts "hfm:v:t:" opt; do
   case "${opt}" in
     h)
       usage
       exit 0
+      ;;
+    f):
+      force="True"
+      f_str="-f"
       ;;
     m)
       method="$OPTARG"
@@ -89,7 +95,15 @@ function TakeSnapshot {
   s_cmd="doctl compute volume snapshot $volume_id --snapshot-name $snapshot_name \
     --snapshot-desc 'doctl $dash_date' -tag backup ${t_str}"
   logging "$s_cmd"
-  eval "$s_cmd"
+  if [[ $force = "False" ]]; then
+    read -p "Do you wish to take snapshot? Yes/No : ${response}"
+    logging "Do you wish to take snapshot? ${response}"
+    if [[ $response = "Yes" ]]; then
+      eval "$s_cmd"
+    fi
+  else
+    eval test2 "$s_cmd"
+  fi
 }
 
 # Delete snapshot
@@ -101,7 +115,7 @@ function DeleteSnapshot {
                grep "$volume_name" | tail -1 | awk '{print $3}')
   logging "Deleting last one: $snapshot_id"
   logging "Date of: $snapshot_date"
-  d_cmd="doctl compute snapshot delete $snapshot_id ${t_str}"
+  d_cmd="doctl compute snapshot delete $snapshot_id ${t_str} ${f_str}"
   logging "$d_cmd"
   eval "$d_cmd"
 }
