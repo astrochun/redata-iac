@@ -1,5 +1,6 @@
 #!/bin/bash
 # DOCTL Backup script
+#   Version: 1.0.2
 #   Creator: Chun Ly
 #   Language: bash
 #
@@ -33,6 +34,7 @@ dash_date=$(date +%Y-%m-%d)
 
 function usage() {
   echo "  DOCTL Backup script
+    Version: ${script_version}
     Creator: Chun Ly
     Language: bash
 
