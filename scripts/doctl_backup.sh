@@ -1,12 +1,24 @@
 #!/bin/bash
+# DOCTL Backup script
+#   Creator: Chun Ly
+#   Language: bash
+#
+# Options:
+#  -h Help information
+#  -v Volume name
+#  -m Method ("take"/"delete")
+#  -t Digital Ocean token
+#
+# Usage:
+#
 # For help information:
 #   ./scripts/doctl_backup.sh -h
 #
-# To execute and take snapshot:
+# To take a new snapshot:
 #   ./scripts/doctl_backup.sh -v <volume_name> -m take (uses doctl auth stored)
 #   ./scripts/doctl_backup.sh -v <volume_name> -t <token> -m take(uses specified token)
 #
-# To delete:
+# To delete last snapshot:
 #   ./scripts/doctl_backup.sh -v <volume_name> -m delete (uses doctl auth stored)
 #   ./scripts/doctl_backup.sh -v <volume_name> -t <token> -m delete (uses specified token)
 
@@ -20,12 +32,22 @@ yyyymmdd_date=$(date +%Y%m%d)
 dash_date=$(date +%Y-%m-%d)
 
 function usage() {
-  echo "Usage:
-  To execute and take snapshot:
+  echo "  DOCTL Backup script
+    Creator: Chun Ly
+    Language: bash
+
+  Options:
+   -h Help information
+   -v Volume name
+   -m Method ("take"/"delete")
+   -t Digital Ocean token
+
+  Usage:
+  To take a new snapshot:
     ./scripts/doctl_backup.sh -v <volume_name> -m take -v (uses doctl auth stored)
     ./scripts/doctl_backup.sh -v <volume_name> -m take -t <token> (uses specified token)
 
-  To execute and delete snapshot:
+  To delete the last snapshot:
     ./scripts/doctl_backup.sh -v <volume_name> -m delete (uses doctl auth stored)
     ./scripts/doctl_backup.sh -v <volume_name> -m delete -t <token> (uses specified token)"
 }
