@@ -52,6 +52,9 @@ function usage() {
   To delete the last snapshot:
     ./scripts/doctl_backup.sh -v <volume_name> -m delete (uses doctl auth stored)
     ./scripts/doctl_backup.sh -v <volume_name> -m delete -t <token> (uses specified token)"
+  logging "$(date)"
+  logging "Completed!"
+  logging "############################"
 }
 
 function logging() {
