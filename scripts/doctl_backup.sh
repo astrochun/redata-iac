@@ -137,9 +137,10 @@ function TakeSnapshot {
 function DeleteSnapshot {
   # Need to retrieve oldest snapshot_id
   logging "Retrieving list of previous snapshots for $volume_name"
-  snapshot_id=$(doctl compute snapshot list --resource volume $t_str | grep $volume_name | tail -1 | awk '{print $1}')
-  snapshot_date=$(doctl compute snapshot list --resource volume $t_str | \
-               grep "$volume_name" | tail -1 | awk '{print $3}')
+  # Get list, strip header, sort by date (newest at stop), and retrieve last entry
+  snapshot_info=$(doctl compute snapshot list --resource volume $t_str | grep $volume_name | awk 'NR > 1 {print}' | sort -r -k 3 | tail -1)
+  snapshot_id=$(echo $snapshot_info | cut -d' ' -f1)
+  snapshot_date=$(echo $snapshot_info | cut -d' ' -f3)
   logging "Deleting last one: $snapshot_id"
   logging "Date of: $snapshot_date"
   d_cmd="doctl compute snapshot delete $snapshot_id ${t_str} ${f_str}"
