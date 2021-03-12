@@ -1,6 +1,6 @@
 #!/bin/bash
 # DOCTL Backup script
-#   Version: 1.0.2
+#   Version: 1.0.3
 #   Creator: Chun Ly
 #   Language: bash
 #
@@ -24,7 +24,7 @@
 #   ./scripts/doctl_backup.sh -v <volume_name> -t <token> -m delete (uses specified token)
 
 
-script_version="1.0.2"
+script_version="1.0.3"
 
 log_file=doctl_backup.log
 
@@ -129,7 +129,7 @@ function TakeSnapshot {
       eval "$s_cmd"
     fi
   else
-    eval test2 "$s_cmd"
+    eval "$s_cmd"
   fi
 }
 
