@@ -82,6 +82,9 @@
     msg: "{{ register_swap_show2.stdout }}"
   tags:
     - swp.enable
+  when:
+   - register_swap_show.stdout == ''
+   - register_stat.stat.exists
 
 - name: Check {{ fstab }}
   lineinfile:
