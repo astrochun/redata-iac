@@ -97,14 +97,6 @@
   tags:
     - swp.fstab
 
-#- name: Check {{ fstab }}
-#  command:
-#    cat {{ fstab }} | grep '{{ swap_file }}'"
-#  register: register_fstab
-#  tags:
-#    - swp.fstab
-#  ignore_errors: true
-
 - name: Print fstab status
   debug:
     msg: "Not in fstab"
