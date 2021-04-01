@@ -49,6 +49,8 @@
     mode: '0600' # 'u+rw,g-rw,o-rw'
   tags:
     - swp.chmod
+  when:
+    - register_stat.stat.mode != '0600'
 
 - name: Register permission of swap file
   command:
