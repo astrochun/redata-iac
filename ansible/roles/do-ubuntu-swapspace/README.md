@@ -55,6 +55,12 @@ To override `size` variable, for example, specify after the role:
 
 Note that an [ansible playbook](../../add_swap_space.yml) to run this script is present in this repostory.
 
+TODO
+----
+
+1. Add option to remove swap via `swapoff`
+2. Fix debug to avoid skips. Find a way to make it succinct based on file status, etc.
+
 License
 -------
 
@@ -65,3 +71,4 @@ Author Information
 
 Created by Chun Ly ([@astrochun](https://github.com/astrochun))
 <!-- An optional section for the role authors to include contact information, or a website (HTML is not allowed).-->
+
