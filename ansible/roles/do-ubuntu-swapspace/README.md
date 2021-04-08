@@ -59,7 +59,7 @@ TODO
 ----
 
 1. Add option to remove swap via `swapoff`
-2. Fix debug to avoid skips. Find a way to make it succinct based on file status, etc.
+2. ~~Fix debug to avoid skips. Find a way to make it succinct based on file status, etc.~~
 
 License
 -------
