@@ -1,0 +1,5 @@
+---
+# defaults file for roles/do-ubuntu-swapspace
+swap_file: /swapfile
+size: 1G
+fstab: /etc/fstab

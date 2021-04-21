@@ -1,0 +1,11 @@
+# Run via: ansible-playbook (-K) ansible/add_swap_space.yml -i inventory \
+#            -e "hostname=<hostname>"
+--- # Ansible playbook for creating swap space on Ubuntu VM's
+- hosts: "{{ hostname }}"
+  become: yes
+  roles:
+    - role: 'roles/do-ubuntu-swapspace'
+      #vars:
+      #  swap_file: "{{ swap_file }}"
+      #  size: "{{ size }}"
+      #  fstab: "{{ fstab }}"

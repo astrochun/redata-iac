@@ -1,0 +1,111 @@
+--- # tasks file for roles/do-ubuntu-swapspace
+
+- name: Check if swap is already activated
+  command:
+    swapon --show
+  register: register_swap_show
+  tags:
+    - swp.check
+    - always
+
+- name: Print status of swapon
+  debug:
+    msg: "{{ 'No swap set' if register_swap_show.stdout == '' else 'Swap set' }}"
+  tags:
+    - swp.check
+    - always
+
+- name: Get swap_file stats
+  stat:
+    path: "{{ swap_file }}"
+  register: register_stat
+  tags:
+    - swp.create
+    - always
+
+- name: Create swap file, size={{ size }}
+  command:
+    fallocate -l {{ size }} {{ swap_file }}
+  tags:
+    - swp.create
+  when:
+    - register_swap_show.stdout == ''
+    - not register_stat.stat.exists
+
+- name: Get swap_file stats (after creation)
+  stat:
+    path: "{{ swap_file }}"
+  register: register_stat2
+  tags:
+    - swp.chmod
+
+- name: Change permission on swap file
+  file:
+    path: "{{ swap_file }}"
+    owner: root
+    group: root
+    mode: '0600' # 'u+rw,g-rw,o-rw'
+  tags:
+    - swp.chmod
+  when:
+    - register_stat2.stat.mode != '0600'
+
+- name: Register permission of swap file
+  command:
+    ls -l {{ swap_file }}
+  register: register_ls2
+  tags:
+    - swp.chmod
+
+- name: Check permissions
+  debug:
+    msg: "{{ register_ls2.stdout }}"
+  tags:
+    - swp.chmod
+
+- name: Enable swap file
+  shell: |
+    mkswap {{ swap_file }}
+    swapon {{ swap_file }}
+    swapon --show
+  register: register_swap_show2
+  tags:
+    - swp.enable
+  when:
+   - register_swap_show.stdout == ''
+   - register_stat.stat.exists
+
+- name: Show swap status
+  debug:
+    msg: "{{ register_swap_show2.stdout }}"
+  tags:
+    - swp.enable
+  when:
+   - register_swap_show.stdout == ''
+   - register_stat.stat.exists
+
+- name: Check {{ fstab }}
+  lineinfile:
+    state: absent
+    path: "{{ fstab }}"
+    regexp: "{{ swap_file }}"
+  check_mode: true
+  changed_when: false # This just makes things look prettier in the logs
+  register: fstab_check
+  tags:
+    - swp.fstab
+
+- name: Print fstab status
+  debug:
+    msg: "{{ 'Not in fstab' if fstab_check.found == 0 else 'In fstab' }}"
+  tags:
+    - swp.fstab
+
+- name: Permanently add to {{ fstab }}
+  shell: |
+    cp {{ fstab }} {{ fstab }}.bak
+    echo '{{ swap_file }} none swap sw 0 0' | sudo tee -a {{ fstab }}
+  tags:
+    - swp.fstab
+  when:
+    - fstab_check.found == 0
