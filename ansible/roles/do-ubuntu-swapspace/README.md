@@ -32,7 +32,13 @@ Dependencies
 
 <!-- A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles. -->
 
-None
+Built-in Ansible dependencies are only used:
+ 1. `stat`
+ 2. `command`
+ 3. `file`
+ 4. `shell`
+ 5. `lineinfile`
+
 
 Example Playbook
 ----------------
