@@ -3,14 +3,14 @@ Digital Ocean Ubuntu Swap Space Creator
 
 This here creates a swap file for Ubuntu 18.04 and Ubuntu 20.04 LTS machines.
 
-It follows instructions from: 
- [18.04](https://www.digitalocean.com/community/tutorials/how-to-add-swap-space-on-ubuntu-18-04)
- [20.04](https://www.digitalocean.com/community/tutorials/how-to-add-swap-space-on-ubuntu-20-04)
+It follows instructions for: 
+ - [Ubuntu 18.04](https://www.digitalocean.com/community/tutorials/how-to-add-swap-space-on-ubuntu-18-04)
+ - [Ubuntu 20.04](https://www.digitalocean.com/community/tutorials/how-to-add-swap-space-on-ubuntu-20-04)
 
 Requirements
 ------------
 
-A Digital Ocean droplet with Ubuntu distribution
+A Digital Ocean droplet with Ubuntu 18.04/20.04 distribution
 
 
 Role Variables
@@ -37,7 +37,7 @@ None
 Example Playbook
 ----------------
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
+Easy playbook. Note that `become` is required
 
     - hosts: hostname
       become: yes
