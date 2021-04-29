@@ -21,8 +21,8 @@ Variables specified in [defaults/main.yml](defaults/main.yml) include:
 | Variables        | Description                                 | Defaults   |
 | ---------------- | ------------------------------------------- | ---------- |
 | user             | User name                                   | user       |
-| password         | Size of swap file                           | 1G         |
-| update_password  | File system tab to update                   | /etc/fstab |
+| password         | Size of swap file                           | ***        |
+| update_password  | File system tab to update                   | on_create  |
 | state            | State of account (present/absent)           | present    |
 | shell            | Set the user's shell                        | /bin/bash  |
 | system           | Make this account a system account          | no         | 
