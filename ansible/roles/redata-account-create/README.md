@@ -2,13 +2,13 @@ ReDATA Linux Account Creator
 ============================
 
 This role easily allow for the creation of a linux account.
-Default configurations is intended for ReDATA purposes
+Default configurations is intended for ReDATA purposes.
 
 
 Requirements
 ------------
 
-A Linux Virtual Machine. This works with Ubuntu and CentOS
+A Linux virtual machine. This works with Ubuntu and CentOS.
 
 
 Role Variables
@@ -28,6 +28,12 @@ Variables specified in [defaults/main.yml](defaults/main.yml) include:
 | system           | Make this account a system account          | no         | 
 | create_home      | Create a home directory at /home/{{ user }} | yes        | 
 | generate_ssh_key | Generate a SSH key for user in question     | yes        |
+
+
+Tags
+----
+
+There is only one tag, `account.create`
 
 
 Dependencies
