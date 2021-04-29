@@ -1,0 +1,15 @@
+--- # tasks file for roles/redata-account-create
+
+- name: Create a login for {{ user }}
+  user:
+    name: "{{ user }}"
+    password: "{{ password | password_hash('sha512') }}"
+    update_password: "{{ update_password }}"
+    state: "{{ state }}"
+    shell: "{{ shell }}"
+    system: "{{ system }}"
+    create_home: "{{ create_home }}"
+    home: "/home/{{ user }}"
+    generate_ssh_key: "{{ generate_ssh_key }}"
+  tags:
+    - account.create
