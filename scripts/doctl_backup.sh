@@ -1,6 +1,6 @@
 #!/bin/bash
 # DOCTL Backup script
-#   Version: 1.0.3
+#   Version: 1.0.4
 #   Creator: Chun Ly
 #   Language: bash
 #
@@ -24,7 +24,7 @@
 #   ./scripts/doctl_backup.sh -v <volume_name> -t <token> -m delete (uses specified token)
 
 
-script_version="1.0.3"
+script_version="1.0.4"
 
 log_file=doctl_backup.log
 
@@ -138,7 +138,7 @@ function DeleteSnapshot {
   # Need to retrieve oldest snapshot_id
   logging "Retrieving list of previous snapshots for $volume_name"
   # Get list, strip header, sort by date (newest at stop), and retrieve last entry
-  snapshot_info=$(doctl compute snapshot list --resource volume $t_str | grep $volume_name | awk 'NR > 1 {print}' | sort -r -k 3 | tail -1)
+  snapshot_info=$(doctl compute snapshot list --resource volume $t_str | grep $volume_name | sort -r -k 3 | tail -1)
   snapshot_id=$(echo $snapshot_info | cut -d' ' -f1)
   snapshot_date=$(echo $snapshot_info | cut -d' ' -f3)
   logging "Deleting last one: $snapshot_id"
