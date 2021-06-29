@@ -16,7 +16,7 @@
         ldcoolp_config='$ldcoolp_root/ldcoolp/config/arizona.ini'
         alias get_pending="$ldcoolp_root/ldcoolp/scripts/get_curation_list --config $ldcoolp_config"
         alias get_data="$ldcoolp_root/ldcoolp/scripts/prereq_script --config $ldcoolp_config --article_id "
-        alias get_metadata="$ldcoolp_root/ldcoolp/scripts/prereq_script --config $ldcoolp_config --article_id --metadata_only"
+        alias get_metadata="$ldcoolp_root/ldcoolp/scripts/prereq_script --config $ldcoolp_config --metadata_only --article_id "
         alias get_qualtrics="$ldcoolp_root/ldcoolp/scripts/generate_qualtrics_links --config $ldcoolp_config --article_id "
 
         alias move_next="$ldcoolp_root/ldcoolp/scripts/perform_move --config $ldcoolp_config --direction next --article_id "
@@ -31,7 +31,7 @@
         ldcoolp_config_stage='$ldcoolp_root/ldcoolp/config/arizona_stage.ini'
         alias get_pending_stage="$ldcoolp_root/ldcoolp/scripts/get_curation_list --config $ldcoolp_config_stage"
         alias get_data_stage="$ldcoolp_root/ldcoolp/scripts/prereq_script --config $ldcoolp_config_stage --article_id "
-        alias get_metadata_stage="$ldcoolp_root/ldcoolp/scripts/prereq_script --config $ldcoolp_config_stage --article_id --metadata_only"
+        alias get_metadata_stage="$ldcoolp_root/ldcoolp/scripts/prereq_script --config $ldcoolp_config_stage --metadata_only --article_id "
         alias get_qualtrics_stage="$ldcoolp_root/ldcoolp/scripts/generate_qualtrics_links --config $ldcoolp_config_stage --article_id "
 
         alias move_next_stage="$ldcoolp_root/ldcoolp/scripts/perform_move --config $ldcoolp_config_stage --direction next --article_id "
