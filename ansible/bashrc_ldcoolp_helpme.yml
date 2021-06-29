@@ -32,9 +32,10 @@
                get_data XXXXXXXX
 
         # python ldcoolp/scripts/prereq_script --article_id XXXXXXXX
-        # where XXXXXXXX is the figshare article ID and also the DOI number
+        # where XXXXXXXX is the figshare article ID
+        # Use get_metadata to download the metadata only
 
-        [4] *NEW* To move dataset from curation, type: *NEW*
+        [4] To move dataset from curation, type:
                move_next XXXXXXXX
                move_back XXXXXXXX
                move_publish XXXXXXXX
@@ -43,7 +44,7 @@
         #   --direction [next/back/publish] --article_id XXXXXXXX
 
 
-        [5] *NEW* To update the README.txt file, type: *NEW*
+        [5] To update the README.txt file, type:
                update_readme XXXXXXXX
 
         # ./ldcoolp/scripts/readme_update --config $ldcoolp_config
