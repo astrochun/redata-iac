@@ -1,6 +1,6 @@
 #!/bin/bash
 # DOCTL Backup script
-#   Version: 1.0.4
+#   Version: 1.0.5
 #   Creator: Chun Ly
 #   Language: bash
 #
@@ -9,6 +9,7 @@
 #  -v Volume name
 #  -m Method ("take"/"delete")
 #  -t Digital Ocean token
+#  -f Force take/delete (no prompt)
 #
 # Usage:
 #
@@ -24,7 +25,7 @@
 #   ./scripts/doctl_backup.sh -v <volume_name> -t <token> -m delete (uses specified token)
 
 
-script_version="1.0.4"
+script_version="1.0.5"
 
 log_file=doctl_backup.log
 
@@ -43,10 +44,11 @@ function usage() {
    -v Volume name
    -m Method ("take"/"delete")
    -t Digital Ocean token
+   -f Force take/delete (no prompt)
 
   Usage:
   To take a new snapshot:
-    ./scripts/doctl_backup.sh -v <volume_name> -m take -v (uses doctl auth stored)
+    ./scripts/doctl_backup.sh -v <volume_name> -m take (uses doctl auth stored)
     ./scripts/doctl_backup.sh -v <volume_name> -m take -t <token> (uses specified token)
 
   To delete the last snapshot:
@@ -58,6 +60,7 @@ function usage() {
 }
 
 function logging() {
+  # Logs to stdout and file
   echo $1
   printf "$1\n" >> "$log_file"
 }
@@ -123,8 +126,8 @@ function TakeSnapshot {
     --snapshot-desc 'doctl $dash_date' -tag backup ${t_str}"
   logging "$s_cmd"
   if [[ $force = "False" ]]; then
-    read -p "Do you wish to take snapshot? Yes/No : ${response}"
-    logging "Do you wish to take snapshot? ${response}"
+    read -p "Do you wish to take snapshot? Yes/No : " response
+    logging "Response: ${response}"
     if [[ $response = "Yes" ]]; then
       eval "$s_cmd"
     fi
