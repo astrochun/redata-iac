@@ -1,6 +1,6 @@
 #!/bin/bash
 # DOCTL Backup script
-#   Version: 1.0.4
+#   Version: 1.0.5
 #   Creator: Chun Ly
 #   Language: bash
 #
@@ -24,7 +24,7 @@
 #   ./scripts/doctl_backup.sh -v <volume_name> -t <token> -m delete (uses specified token)
 
 
-script_version="1.0.4"
+script_version="1.0.5"
 
 log_file=doctl_backup.log
 
@@ -123,8 +123,8 @@ function TakeSnapshot {
     --snapshot-desc 'doctl $dash_date' -tag backup ${t_str}"
   logging "$s_cmd"
   if [[ $force = "False" ]]; then
-    read -p "Do you wish to take snapshot? Yes/No : ${response}"
-    logging "Do you wish to take snapshot? ${response}"
+    read -p "Do you wish to take snapshot? Yes/No : " response
+    logging "Response: ${response}"
     if [[ $response = "Yes" ]]; then
       eval "$s_cmd"
     fi
