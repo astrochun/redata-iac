@@ -1,0 +1,24 @@
+# This is intended as a playbook of playbooks to set-up a UNIX account on a our curation services.
+# It *should*:
+#   1. Create the UNIX account for <<user>>,
+#   2. Install LD-Cool-P
+#   3. Set-up conda environment, and
+#   4. Update the .bashrc with LD-Cool-P settings
+# Note: This was not fully tested
+# Run via: ansible-playbook (-K) ansible/curation_account_setup.yml -i inventory -e "user=<username>"
+- name: "Create {{ user }} account"
+  import_playbook: ansible/debian_curation_account_create.yml
+  vars:
+    user: {{ user }}
+- name: Clone LD-Cool-P
+  import_playbook: ansible/git-pull_ldcoolp.yml
+  vars:
+    user: {{ user }}
+- name: Add bashrc conda initialization set-up
+  import_playbook: ansible/bashrc_conda_add.yml
+  vars:
+    user: {{ user }}
+- name: Add bashrc LD-Cool-P set-up
+  import_playbook: ansible/bashrc_ldcoolp_setup.yml
+  vars:
+    user: {{ user }}
