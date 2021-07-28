@@ -1,0 +1,22 @@
+# This was intended to be a script to add an account with sudo and curation privileges
+# Note that this was not fully tested and the password field should be passed in with
+# encryption done within the playbook
+# Note: This was not fully tested
+# Run via: ansible-playbook (-K) ansible/debian_account_create.yml -i inventory
+---
+- name: Create an account with curation group
+  hosts: curation
+  tasks:
+    - name: Create a login for {{ user }}
+      user:
+        name: "{{ user }}"
+        password: '???'
+        groups:
+         - curation
+         - sudo
+        state: present
+        shell: /bin/bash          # Defaults to /bin/bash
+        system: no                # Defaults to no
+        createhome: yes           # Defaults to yes
+        home: "/home/{{ user }}"  # Defaults to /home/<username>
+
